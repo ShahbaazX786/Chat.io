@@ -4,7 +4,7 @@ import LeftSideBar from "../components/LeftSideBar";
 import RightSideBar from "../components/RightSideBar";
 
 const HomePage = () => {
-  const [selectedUser] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(false);
 
   return (
     <div className="border w-full h-screen sm:px-[15%] sm:py-[5%]">
@@ -15,7 +15,10 @@ const HomePage = () => {
             : "md:grid-cols-2"
         }`}
       >
-        <LeftSideBar />
+        <LeftSideBar
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
         <ChatContainer />
         <RightSideBar />
       </div>
