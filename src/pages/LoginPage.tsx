@@ -9,24 +9,41 @@ const LoginPage = () => {
   const [bio, setBio] = useState("");
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
 
+  const onSubmitHandler = (event: Event) => {
+    event.preventDefault();
+
+    if (currState === "Register" && !isDataSubmitted) {
+      setIsDataSubmitted(true);
+      return;
+    }
+  };
+
   return (
     <div className="flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl min-h-screen bg-cover bg-center">
-      {/* left */}
+      {/* left Section */}
       <img
         src={assets.logo_big}
         alt="Big Logo"
         className="w-[min(30vw, 250px)]"
       />
 
-      {/* right */}
-      <form className="border-2 text-white bg-white/8 border-gray-500 p-6 flex flex-col gap-6 rounded-lg shadow-lg">
+      {/* right Section*/}
+      <form
+        onSubmit={onSubmitHandler}
+        className="border-2 text-white bg-white/8 border-gray-500 p-6 flex flex-col gap-6 rounded-lg shadow-lg"
+      >
         <h2 className="font-medium text-2xl flex justify-between items-center">
           {currState}
-          <img
-            src={assets.arrow_icon}
-            alt="arrow icon"
-            className="w-5 cursor-pointer"
-          />
+          {isDataSubmitted && (
+            <img
+              onClick={() => {
+                setIsDataSubmitted(false);
+              }}
+              src={assets.arrow_icon}
+              alt="arrow icon"
+              className="w-5 cursor-pointer"
+            />
+          )}
         </h2>
 
         {currState === "Register" && !isDataSubmitted && (
@@ -87,14 +104,26 @@ const LoginPage = () => {
           {currState === "Register" ? (
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
-              <span className="font-medium text-violet-600 cursor-pointer">
+              <span
+                className="font-medium text-violet-600 cursor-pointer"
+                onClick={() => {
+                  setCurrState("Login");
+                  setIsDataSubmitted(false);
+                }}
+              >
                 Login here
               </span>
             </p>
           ) : (
             <p className="text-sm text-gray-600">
               Create an account{" "}
-              <span className="font-medium text-violet-600 cursor-pointer">
+              <span
+                className="font-medium text-violet-600 cursor-pointer"
+                onClick={() => {
+                  setCurrState("Register");
+                  setIsDataSubmitted(false);
+                }}
+              >
                 Click here
               </span>
             </p>
