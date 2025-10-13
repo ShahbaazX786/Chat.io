@@ -1,6 +1,7 @@
 import { generateToken } from '../lib/utils.js';
 import User from "../models/User";
 
+// takes data and stores in db by returning a token.
 const signup = async () => {
     const { fullName, email, password, bio } = req.body;
     try {
@@ -24,7 +25,7 @@ const signup = async () => {
     }
 }
 
-
+// checks data and returns jwt token if matches.
 const login = async () => {
     const { email, password } = req.body;
     try {
@@ -46,4 +47,9 @@ const login = async () => {
     }
 }
 
-export { signup, login };
+// Checks if user is authenticated.
+const checkAuth = (req, res) => {
+    res.json({ success: true, user: req.user });
+}
+
+export { signup, login, checkAuth };
