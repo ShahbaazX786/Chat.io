@@ -24,4 +24,26 @@ const signup = async () => {
     }
 }
 
-export default signup;
+
+const login = async () => {
+    const { email, password } = req.body;
+    try {
+        if (!email || !password) {
+            return res.json({ success: false, message: 'All Fields are Required' })
+        }
+
+        const user = await User.findOne({ email });
+        const isPasswordMatching = await bcrypt.compare(password, user.password)
+        if (!user || !isPasswordMatching) {
+            return res.json({ success: false, message: 'Invalid Credentials' })
+        }
+        const token = generateToken(user._id);
+        res.json({ success: true, user, token, message: 'Login Sucessful' });
+
+    } catch (error) {
+        console.log(error.message)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { signup, login };
