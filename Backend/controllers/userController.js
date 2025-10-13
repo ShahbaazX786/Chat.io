@@ -1,6 +1,6 @@
 import cloudinary from '../lib/cloudinary.js';
 import { generateToken } from '../lib/utils.js';
-import User from "../models/User";
+import User from "../models/User.js";
 
 // takes data and stores in db by returning a token.
 const signup = async () => {
