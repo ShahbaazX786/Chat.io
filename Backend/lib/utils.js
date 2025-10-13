@@ -6,4 +6,10 @@ const generateToken = (userId) => {
     return token;
 }
 
-export { generateToken };
+const decodeToken = (token) => {
+    const secretKey = process.env.JWT_SECRET;
+    const decodedToken = jwt.verify(token, secretKey)
+    return decodedToken;
+}
+
+export { generateToken, decodeToken };
