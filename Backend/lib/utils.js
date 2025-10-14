@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import cloudinary from './cloudinary';
 
 const generateToken = (userId) => {
     const secretKey = process.env.JWT_SECRET;
@@ -12,4 +13,17 @@ const decodeToken = (token) => {
     return decodedToken;
 }
 
-export { generateToken, decodeToken };
+const uploadImage = async (img) => {
+    let imgUrl;
+    try {
+        const response = await cloudinary.uploader.upload(img);
+        if (response && response.secure_url) {
+            imgUrl = response.secure_url;
+        }
+        return imgUrl;
+    } catch (error) {
+        console.log('Error Uploading Image to Cloudinary', error.message);
+    }
+}
+
+export { generateToken, decodeToken, uploadImage };
