@@ -1,9 +1,10 @@
 import cloudinary from '../lib/cloudinary.js';
 import { generateToken } from '../lib/utils.js';
 import User from "../models/User.js";
+import bcrypt from 'bcryptjs';
 
 // takes data and stores in db by returning a token.
-const signup = async () => {
+const signup = async (req, res) => {
     const { fullName, email, password, bio } = req.body;
     try {
         if (!fullName || !email || !password || !bio) {
@@ -18,7 +19,7 @@ const signup = async () => {
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = await User.create({ fullName, email, password: hashedPassword, bio });
         const token = generateToken(newUser._id);
-        res.json({ success: true, message: 'Account Created Sucessfully' }, token)
+        res.json({ success: true, message: 'Account Created Sucessfully', token })
 
     } catch (error) {
         console.log(error.message)
