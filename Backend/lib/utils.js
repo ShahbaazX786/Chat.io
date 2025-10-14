@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import cloudinary from './cloudinary';
+import cloudinary from './cloudinary.js';
 
 const generateToken = (userId) => {
     const secretKey = process.env.JWT_SECRET;
