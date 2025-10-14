@@ -3,6 +3,7 @@ import 'dotenv/config';
 import express from 'express';
 import http from 'http';
 import { connectDB } from './lib/db.js';
+import messageRouter from './routes/messageRoutes.js';
 import userRouter from './routes/userRoutes.js';
 
 const app = express();
@@ -13,6 +14,7 @@ app.use(cors());
 
 app.use('/api/status', (_req, res) => res.send('Server is up and running'));
 app.use('/api/auth', userRouter);
+app.use('/api/messages', messageRouter);
 
 await connectDB();
 
