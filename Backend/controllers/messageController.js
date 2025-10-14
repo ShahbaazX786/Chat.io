@@ -1,6 +1,8 @@
 import { uploadImage } from '../lib/utils.js';
 import Message from '../models/Message.js';
 import User from '../models/User.js';
+import { getIO, getUserSocketMap } from '../lib/socket.js';
+
 
 // Get all users except the logged in user
 export const getUsersForSidebar = async () => {
@@ -67,6 +69,11 @@ export const sendMessage = async (req, res) => {
         const newMsg = await Message.create({
             senderId, receiverId, text, image: imgUrl
         })
+        // emit new msg to receiver's socket.
+        const receiverSocketId = getUserSocketMap()[receiverId];
+        if (receiverSocketId) {
+            getIO().to(receiverSocketId).emit('newMessage', newMsg);
+        }
         res.json({ success: true, newMsg });
     } catch (error) {
         console.log(error.message);
