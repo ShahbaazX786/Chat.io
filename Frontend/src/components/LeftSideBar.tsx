@@ -1,12 +1,24 @@
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import assets, { userDummyData } from "../assets/assets";
-import type { SelectedUserProps } from "../lib/types";
-import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { ChatContext } from "../../context/ChatContext";
+import assets from "../assets/assets";
 
-const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
-  const { logOut } = useContext(AuthContext);
+const LeftSideBar = () => {
+  const { logOut, onlineUsers } = useContext(AuthContext);
+  const { getUsers, users, selectedUser, setSelectedUser, unSeenMsgs } =
+    useContext(ChatContext);
   const navigate = useNavigate();
+  const [input, setInput] = useState("");
+  const filteredUsers = input
+    ? users.filter((user: any) =>
+        user.fullName.toLowerCase().includes(input.toLowerCase())
+      )
+    : users;
+
+  useEffect(() => {
+    getUsers();
+  }, [onlineUsers]);
 
   return (
     <div
@@ -41,6 +53,7 @@ const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
         <div className="bg-[#282142] rounded-full flex items-center gap-2 py-3 px-4 mt-5">
           <img src={assets.search_icon} alt="Search" className="w-3" />
           <input
+            onChange={(e) => setInput(e.target.value)}
             type="text"
             placeholder="Search User..."
             className="bg-transparent border-none outline-none text-white text-xs placeholder-[#c8c8c8]"
@@ -49,7 +62,7 @@ const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
       </div>
 
       <div className="flex flex-col">
-        {userDummyData.map((user, index) => (
+        {filteredUsers.map((user, index) => (
           <div
             key={index}
             onClick={() => {
@@ -66,15 +79,15 @@ const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
             />
             <div className="flex flex-col leading-5">
               <p className="">{user?.fullName}</p>
-              {index < 3 ? (
+              {onlineUsers.includes(user._id) ? (
                 <span className="text-green-400 text-xs">Online</span>
               ) : (
                 <span className="text-xs text-neutral-400">Offline</span>
               )}
             </div>
-            {index > 2 && (
+            {unSeenMsgs[user._id] > 0 && (
               <p className="absolute top-4 right-4 text-xs h-5 w-5 flex justify-center items-center rounded-full bg-violet-500/50">
-                {index}
+                {unSeenMsgs[user._id]}
               </p>
             )}
           </div>
