@@ -29,7 +29,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   //   Login Function to handle user authentiation and socket connection
-  const login = async (state, creds) => {
+  const logIn = async (state, creds) => {
     try {
       const { data } = await axios.post(`/api/auth/${state}`, creds);
       if (data.success) {
@@ -97,7 +97,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     authUser,
     onlineUsers,
     socket,
-    login,
+    logIn,
     logOut,
     updateProfile,
   };
