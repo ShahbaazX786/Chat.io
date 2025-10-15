@@ -29,7 +29,15 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen bg-cover bg-no-repeat flex items-center justify-center">
-      <div className="w-5/6 max-w-2xl backdrop-blur-2xl text-gray-300 border-2 border-gray-600 flex items-center justify-between max-sm:flex-col-reverse rounded-lg">
+      <div className="w-5/6 max-w-2xl backdrop-blur-2xl text-gray-300 border-2 border-gray-600 flex items-center justify-between max-sm:flex-col-reverse rounded-lg relative">
+        <button
+          className="absolute top-1 right-0 cursor-pointer bg-red-500/80 px-3 py-1 rounded-sm font-bold text-xl"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          X
+        </button>
         <form
           onSubmit={saveHandler}
           className="flex flex-col gap-5 p-10 flex-1"
