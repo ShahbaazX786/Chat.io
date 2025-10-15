@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import assets, { userDummyData } from "../assets/assets";
 import type { SelectedUserProps } from "../lib/types";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
+  const { logOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
   return (
@@ -28,10 +31,7 @@ const LeftSideBar = ({ selectedUser, setSelectedUser }: SelectedUserProps) => {
                 Edit Profile
               </p>
               <hr className="my-2 border-t border-gray-500" />
-              <p
-                className="text-sm cursor-pointer"
-                onClick={() => navigate("/")}
-              >
+              <p className="text-sm cursor-pointer" onClick={() => logOut()}>
                 Logout
               </p>
             </div>
