@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import assets from "../assets/assets";
+import { AuthContext } from "../../context/AuthContext";
 
 const ProfilePage = () => {
+  const { authUser, updateProfile } = useContext(AuthContext);
+
   const [selectedImage, setSelectedImage] = useState(null);
-  const [name, setName] = useState("Random");
-  const [bio, setBio] = useState("Wassup my Random");
+  const [name, setName] = useState(authUser.fullName);
+  const [bio, setBio] = useState(authUser.bio);
   const navigate = useNavigate();
 
   const saveHandler = async (e: Event) => {
     e.preventDefault();
-    navigate("/");
+    if (!selectedImage) {
+      await updateProfile({ fullName: name, bio });
+      navigate("/");
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedImage);
+    reader.onload = async () => {
+      const base64Img = reader.result;
+      await updateProfile({ profilePic: base64Img, fullName: name, bio });
+      navigate("/");
+    };
   };
 
   return (
@@ -72,9 +86,11 @@ const ProfilePage = () => {
           </button>
         </form>
         <img
-          src={assets.logo_icon}
+          src={authUser?.profilePic || assets.logo_icon}
           alt="Logo Icon"
-          className="max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10"
+          className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${
+            selectedImage && "rounded-full"
+          }`}
         />
       </div>
     </div>
