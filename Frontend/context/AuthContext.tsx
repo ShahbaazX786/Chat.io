@@ -90,7 +90,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       axios.defaults.headers.common["token"] = token;
     }
     checkAuth();
-  }, []);
+  }, [token]);
 
   const value = {
     axios,
