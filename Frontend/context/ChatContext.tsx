@@ -31,6 +31,16 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Function to get messages for selected User.
+  const getMessages = async (userId: string) => {
+    try {
+      const { data } = await axios.get(`/api/messages/${userId}`);
+      if (data.success) {
+        setMessages(data.messages);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   // Function to send Message to selected User.
   const sendMessage = async (msgData: any) => {
@@ -84,7 +94,7 @@ const ChatProvider = ({ children }: { children: ReactNode }) => {
     users,
     selectedUser,
     getUsers,
-    setMessages,
+    getMessages,
     sendMessage,
     setSelectedUser,
     unSeenMsgs,
