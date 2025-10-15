@@ -5,7 +5,7 @@ import { getIO, getUserSocketMap } from '../lib/socket.js';
 
 
 // Get all users except the logged in user
-export const getUsersForSidebar = async () => {
+export const getUsersForSidebar = async (req, res) => {
     try {
         const userId = req.user._id;
         const filteredUsers = await User.find({ _id: { $ne: userId } }).select('-password');
@@ -44,7 +44,7 @@ export const getMessages = async (req, res) => {
 }
 
 // Marks message as seen using MsgID
-export const markMessageAsSeen = async (req) => {
+export const markMessageAsSeen = async (req, res) => {
     try {
         const { id } = req.params;
         await Message.findByIdAndUpdate(id, { seen: true })
