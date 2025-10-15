@@ -6,8 +6,14 @@ import assets from "../assets/assets";
 
 const LeftSideBar = () => {
   const { logOut, onlineUsers } = useContext(AuthContext);
-  const { getUsers, users, selectedUser, setSelectedUser, unSeenMsgs } =
-    useContext(ChatContext);
+  const {
+    getUsers,
+    users,
+    selectedUser,
+    setSelectedUser,
+    unSeenMsgs,
+    setUnSeenMsgs,
+  } = useContext(ChatContext);
   const navigate = useNavigate();
   const [input, setInput] = useState("");
   const filteredUsers = input
@@ -67,6 +73,7 @@ const LeftSideBar = () => {
             key={index}
             onClick={() => {
               setSelectedUser(user);
+              setUnSeenMsgs((prev) => ({ ...prev, [user._id]: 0 }));
             }}
             className={`relative flex items-center gap-2 p-2 pl-4 rounded cursor-pointer max-sm:text-sm ${
               selectedUser?._id === user._id && "bg-[#282142]/50"
