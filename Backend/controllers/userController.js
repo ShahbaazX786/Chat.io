@@ -28,7 +28,7 @@ const signup = async (req, res) => {
 }
 
 // checks data and returns jwt token if matches.
-const login = async () => {
+const login = async (req, res) => {
     const { email, password } = req.body;
     try {
         if (!email || !password) {
