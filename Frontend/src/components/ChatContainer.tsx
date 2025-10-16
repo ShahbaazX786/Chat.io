@@ -4,9 +4,11 @@ import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 import assets from "../assets/assets";
 import { formatMsgTime } from "../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const ChatContainer = () => {
-  const { messages, selectedUser, setSelectedUser, sendMessage, getMessages } =
+  const navigate = useNavigate();
+  const { messages, selectedUser, sendMessage, getMessages } =
     useContext(ChatContext);
   const { authUser, onlineUsers } = useContext(AuthContext);
   const scrollEnd = useRef<HTMLDivElement | null>(null);
@@ -57,21 +59,23 @@ const ChatContainer = () => {
         />
         <p className="flex-1 text-lg text-white flex items-center gap-2">
           {selectedUser.fullName}
-          {onlineUsers.includes(selectedUser._id)}
-          <span className="w-2 h-2 rounded-full bg-green-500"></span>
+          {onlineUsers.includes(selectedUser._id) && (
+            <span className="w-2 h-2 rounded-full bg-green-500"></span>
+          )}
         </p>
-        <img
+        {/* <img
           onClick={() => {
-            setSelectedUser(null);
+            setSelectedUser(selectedUser);
           }}
           src={assets.arrow_icon}
           alt="Arrow"
           className="md:hidden max-w-7"
-        />
+        /> */}
         <img
           src={assets.help_icon}
           alt="Help"
-          className="max-md:hidden max-w-5"
+          className="max-w-5"
+          onClick={() => navigate(`/profile/${selectedUser._id}`)}
         />
       </div>
 
@@ -81,10 +85,10 @@ const ChatContainer = () => {
           <div
             key={index}
             className={`flex items-end gap-2 justify-end ${
-              msg.senderId !== authUser._id && "flex-row-reverse"
+              msg?.senderId !== authUser._id && "flex-row-reverse"
             }`}
           >
-            {msg.image ? (
+            {msg?.image ? (
               <img
                 src={msg?.image}
                 alt="User Image"
@@ -93,26 +97,26 @@ const ChatContainer = () => {
             ) : (
               <p
                 className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${
-                  msg.senderId === authUser._id
+                  msg?.senderId === authUser._id
                     ? "rounded-br-none"
                     : "rounded-bl-none"
                 }`}
               >
-                {msg.text}
+                {msg?.text}
               </p>
             )}
 
             <div className="text-center text-xs">
               <img
                 src={
-                  msg.senderId === authUser._id
+                  msg?.senderId === authUser._id
                     ? authUser?.profilePic || assets.avatar_icon
                     : selectedUser?.profilePic || assets.avatar_icon
                 }
                 alt="Avatar Icon"
                 className="w-7 rounded-full"
               />
-              <p className="text-gray-500">{formatMsgTime(msg.createdAt)}</p>
+              <p className="text-gray-500">{formatMsgTime(msg?.createdAt)}</p>
             </div>
           </div>
         ))}
