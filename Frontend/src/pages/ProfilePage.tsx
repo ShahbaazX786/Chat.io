@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 import assets from "../assets/assets";
+import { getMemberSince, getMemberStatus } from "../lib/utils";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -54,61 +55,83 @@ const ProfilePage = () => {
         >
           X
         </button>
-        <form
-          onSubmit={saveHandler}
-          className="flex flex-col gap-5 p-10 flex-1"
-        >
-          <h3 className="text-lg">Profile Details</h3>
-          <label
-            htmlFor="avatar"
-            className="flex items-center gap-3 cursor-pointer"
+        {userId ? (
+          <div className="flex flex-col gap-5 p-10 flex-1">
+            <fieldset className="border border-gray-700 rounded-lg p-5 space-y-2 drop-shadow-2xl shadow-white">
+              <legend className="text-lg">Profile Details</legend>
+              <p>
+                Name: &nbsp;<span>{name}</span>
+              </p>
+              <p>
+                Member Status: &nbsp;<span>{getMemberStatus()}</span>
+              </p>
+              <p>
+                Member Since: &nbsp;
+                <span>{getMemberSince(selectedUser.createdAt)}</span>
+              </p>
+              <p>
+                Bio: &nbsp;<span>{bio}</span>
+              </p>
+            </fieldset>
+          </div>
+        ) : (
+          <form
+            onSubmit={saveHandler}
+            className="flex flex-col gap-5 p-10 flex-1"
           >
+            <h3 className="text-lg">Profile Details</h3>
+            <label
+              htmlFor="avatar"
+              className="flex items-center gap-3 cursor-pointer"
+            >
+              <input
+                type="file"
+                name="avatar"
+                id="avatar"
+                accept=".png, .jpg, .jpeg"
+                hidden
+                onChange={(e) => setSelectedImage(e.target.files[0])}
+              />
+              <img
+                src={
+                  selectedImage
+                    ? URL.createObjectURL(selectedImage)
+                    : assets.avatar_icon
+                }
+                alt="avatar icon"
+                className={`w-12 h-12 ${selectedImage && "rounded-full"}`}
+              />
+              Upload Profile Image.
+            </label>
             <input
-              type="file"
-              name="avatar"
-              id="avatar"
-              accept=".png, .jpg, .jpeg"
-              hidden
-              onChange={(e) => setSelectedImage(e.target.files[0])}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              value={name}
+              type="text"
+              required
+              placeholder="Your Name"
+              className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
-            <img
-              src={
-                selectedImage
-                  ? URL.createObjectURL(selectedImage)
-                  : assets.avatar_icon
-              }
-              alt="avatar icon"
-              className={`w-12 h-12 ${selectedImage && "rounded-full"}`}
-            />
-            Upload Profile Image.
-          </label>
-          <input
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            value={name}
-            type="text"
-            required
-            placeholder="Your Name"
-            className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
-          />
-          <textarea
-            rows={4}
-            onChange={(e) => {
-              setBio(e.target.value);
-            }}
-            value={bio}
-            required
-            placeholder="Your Profile Bio..."
-            className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
-          ></textarea>
-          <button
-            type="submit"
-            className="bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer"
-          >
-            Save
-          </button>
-        </form>
+            <textarea
+              rows={4}
+              onChange={(e) => {
+                setBio(e.target.value);
+              }}
+              value={bio}
+              required
+              placeholder="Your Profile Bio..."
+              className="p-2 border border-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-violet-500"
+            ></textarea>
+            <button
+              type="submit"
+              className="bg-gradient-to-r from-purple-400 to-violet-600 text-white p-2 rounded-full text-lg cursor-pointer"
+            >
+              Save
+            </button>
+          </form>
+        )}
+
         <img
           src={profilePic || assets.logo_icon}
           alt="Logo Icon"
