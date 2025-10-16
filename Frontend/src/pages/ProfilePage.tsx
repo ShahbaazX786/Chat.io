@@ -1,14 +1,18 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import assets from "../assets/assets";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { ChatContext } from "../../context/ChatContext";
+import assets from "../assets/assets";
 
 const ProfilePage = () => {
+  const { userId } = useParams();
   const { authUser, updateProfile } = useContext(AuthContext);
+  const { selectedUser } = useContext(ChatContext);
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState(authUser.fullName);
   const [bio, setBio] = useState(authUser.bio);
+  const [profilePic, setProfilePic] = useState("");
   const navigate = useNavigate();
 
   const saveHandler = async (e: Event) => {
@@ -26,6 +30,18 @@ const ProfilePage = () => {
       navigate("/");
     };
   };
+
+  useEffect(() => {
+    if (!userId) {
+      setName(authUser.fullName);
+      setBio(authUser.bio);
+      setProfilePic(authUser?.profilePic);
+    } else {
+      setName(selectedUser.fullName);
+      setBio(selectedUser.bio);
+      setProfilePic(selectedUser?.profilePic);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-cover bg-no-repeat flex items-center justify-center">
@@ -94,7 +110,7 @@ const ProfilePage = () => {
           </button>
         </form>
         <img
-          src={authUser?.profilePic || assets.logo_icon}
+          src={profilePic || assets.logo_icon}
           alt="Logo Icon"
           className={`max-w-44 aspect-square rounded-full mx-10 max-sm:mt-10 ${
             selectedImage && "rounded-full"
