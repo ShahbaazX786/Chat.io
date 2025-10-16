@@ -27,6 +27,10 @@ function App() {
           path="/profile"
           element={authUser ? <ProfilePage /> : <Navigate to={`/login`} />}
         />
+        <Route
+          path="/profile/:userId"
+          element={authUser ? <ProfilePage /> : <Navigate to={`/login`} />}
+        />
       </Routes>
     </div>
   );
