@@ -1,9 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import assets, { imagesDummyData } from "../assets/assets";
-import type { SelectedUserProps } from "../lib/types";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { ChatContext } from "../../context/ChatContext";
+import assets from "../assets/assets";
+import type { Message } from "../lib/types";
 
-const RightSideBar = ({ selectedUser }: SelectedUserProps) => {
-  const navigate = useNavigate();
+const RightSideBar = () => {
+  const { selectedUser, messages } = useContext(ChatContext);
+  const { logOut, onlineUsers } = useContext(AuthContext);
+  const [msgImages, setMsgImages] = useState([]);
+
+  useEffect(() => {
+    setMsgImages(
+      messages
+        .filter((msg: Message) => msg?.image)
+        .map((msg: Message) => msg?.image)
+    );
+  }, [messages]);
+
   return (
     selectedUser && (
       <div
@@ -19,7 +32,9 @@ const RightSideBar = ({ selectedUser }: SelectedUserProps) => {
             className="w-20 aspect-[1/1] rounded-full"
           />
           <h1 className="px-10 text-xl font-medium mx-auto flex items-center gap-2">
-            <p className="w-2 h-2 rounded-full bg-green-500"></p>
+            {onlineUsers.includes(selectedUser._id) && (
+              <p className="w-2 h-2 rounded-full bg-green-500"></p>
+            )}
             {selectedUser?.fullName}
           </h1>
           <p className="px-10 mx-auto">{selectedUser?.bio}</p>
@@ -31,7 +46,7 @@ const RightSideBar = ({ selectedUser }: SelectedUserProps) => {
         <div className="px-5 text-xs">
           <p>Media</p>
           <div className="mt-2 overflow-y-scroll grid grid-cols-2 gap-4 opacity-80 h-full">
-            {imagesDummyData.map((url, index) => (
+            {msgImages.map((url, index) => (
               <div
                 key={index}
                 onClick={() => window.open(url)}
@@ -48,7 +63,7 @@ const RightSideBar = ({ selectedUser }: SelectedUserProps) => {
         </div>
 
         <button
-          onClick={() => navigate("/login")}
+          onClick={() => logOut()}
           className="absolute bottom-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-400 to-violet-600 text-white border-none text-sm font-light py-2 px-20 rounded-full cursor-pointer"
         >
           Logout
