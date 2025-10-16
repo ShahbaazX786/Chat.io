@@ -3,9 +3,9 @@ import 'dotenv/config';
 import express from 'express';
 import http from 'http';
 import { connectDB } from './lib/db.js';
+import { initializeSocket } from './lib/socket.js';
 import messageRouter from './routes/messageRoutes.js';
 import userRouter from './routes/userRoutes.js';
-import { initializeSocket } from './lib/socket.js'
 
 // Server 
 const app = express();
@@ -25,6 +25,10 @@ app.use('/api/messages', messageRouter);
 await connectDB();
 
 // Server Listening
-const PORT = process.env.PORT || 3000;
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 3000;
+    server.listen(PORT, () => { console.log('Server is running on PORT:', PORT) });
+}
 
-server.listen(PORT, () => { console.log('Server is running on PORT:', PORT) });
+// Exporting server so that vercel can take over and re-run it.
+export default server;
