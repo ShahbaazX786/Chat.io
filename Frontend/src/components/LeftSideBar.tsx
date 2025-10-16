@@ -68,7 +68,7 @@ const LeftSideBar = () => {
       </div>
 
       <div className="flex flex-col">
-        {filteredUsers.map((user, index) => (
+        {filteredUsers.map((user: any, index: number) => (
           <div
             key={index}
             onClick={() => {
@@ -81,7 +81,7 @@ const LeftSideBar = () => {
           >
             <img
               src={user?.profilePic || assets.avatar_icon}
-              alt=""
+              alt="User Profile Icon"
               className="w-[35px] aspect-[1/1] rounded-full "
             />
             <div className="flex flex-col leading-5">
