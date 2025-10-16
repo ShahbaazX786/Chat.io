@@ -10,3 +10,11 @@ export type SelectedUserProps = {
   selectedUser: User | any;
   setSelectedUser: React.Dispatch<React.SetStateAction<User | any>>;
 };
+
+export type Message = {
+  senderId: string;
+  receiverId: string;
+  text: string;
+  image: string;
+  seen: boolean;
+};
