@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ChatContext } from "../../context/ChatContext";
 import assets from "../assets/assets";
 import { formatMsgTime } from "../lib/utils";
-import { useNavigate } from "react-router-dom";
 
 const ChatContainer = () => {
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const ChatContainer = () => {
     if (selectedUser) {
       getMessages(selectedUser._id);
     }
-  }, [selectedUser]);
+  }, [getMessages, selectedUser]);
 
   useEffect(() => {
     if (scrollEnd.current && messages) {
@@ -63,14 +63,6 @@ const ChatContainer = () => {
             <span className="w-2 h-2 rounded-full bg-green-500"></span>
           )}
         </p>
-        {/* <img
-          onClick={() => {
-            setSelectedUser(selectedUser);
-          }}
-          src={assets.arrow_icon}
-          alt="Arrow"
-          className="md:hidden max-w-7"
-        /> */}
         <img
           src={assets.help_icon}
           alt="Help"
