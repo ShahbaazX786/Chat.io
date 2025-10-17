@@ -5,6 +5,7 @@ import { AuthContext } from "../context/AuthContext";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
+import GeneralPage from "./pages/GeneralPage";
 
 function App() {
   // return <h1 className="text-3xl font-bold underline">Bismillah</h1>;
@@ -31,6 +32,7 @@ function App() {
           path="/profile/:userId"
           element={authUser ? <ProfilePage /> : <Navigate to={`/login`} />}
         />
+        <Route path="/general/:id" element={<GeneralPage />} />
       </Routes>
     </div>
   );
