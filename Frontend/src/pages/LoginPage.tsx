@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import assets from "../assets/assets";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [currState, setCurrState] = useState("Register");
@@ -11,7 +12,7 @@ const LoginPage = () => {
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
 
   const { logIn } = useContext(AuthContext);
-
+  const navigate = useNavigate();
   const onSubmitHandler = (event: Event) => {
     event.preventDefault();
 
@@ -106,15 +107,30 @@ const LoginPage = () => {
 
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <input type="checkbox" />
-          <p>Agree to the terms of use & privacy policy.</p>
+          <p>
+            Agree to the{" "}
+            <span
+              className="hover:underline text-gray-400 cursor-pointer"
+              onClick={() => navigate("/general/terms-of-use")}
+            >
+              Terms of use
+            </span>{" "}
+            &{" "}
+            <span
+              className="hover:underline text-gray-400 cursor-pointer"
+              onClick={() => navigate("/general/privacy-policy")}
+            >
+              privacy policy.
+            </span>
+          </p>
         </div>
 
         <div className="flex flex-col gap-2">
           {currState === "Register" ? (
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-400">
               Already have an account?{" "}
               <span
-                className="font-medium text-violet-600 cursor-pointer"
+                className="font-medium text-violet-500 cursor-pointer hover:underline"
                 onClick={() => {
                   setCurrState("Login");
                   setIsDataSubmitted(false);
@@ -124,10 +140,10 @@ const LoginPage = () => {
               </span>
             </p>
           ) : (
-            <p className="text-sm text-gray-600">
-              Create an account{" "}
+            <p className="text-sm text-gray-400">
+              Don't have an account?{" "}
               <span
-                className="font-medium text-violet-600 cursor-pointer"
+                className="font-medium text-violet-500 cursor-pointer hover:underline"
                 onClick={() => {
                   setCurrState("Register");
                   setIsDataSubmitted(false);
