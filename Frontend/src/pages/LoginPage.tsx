@@ -149,7 +149,7 @@ const LoginPage = () => {
                   setIsDataSubmitted(false);
                 }}
               >
-                Click here
+                Create now
               </span>
             </p>
           )}
