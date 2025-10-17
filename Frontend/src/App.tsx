@@ -32,6 +32,12 @@ function App() {
           path="/profile/:userId"
           element={authUser ? <ProfilePage /> : <Navigate to={`/login`} />}
         />
+        <Route
+          path="/general"
+          element={
+            authUser ? <Navigate to={`/`} /> : <Navigate to={`/login`} />
+          }
+        />
         <Route path="/general/:id" element={<GeneralPage />} />
       </Routes>
     </div>
