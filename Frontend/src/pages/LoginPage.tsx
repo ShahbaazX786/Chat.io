@@ -10,9 +10,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
+  const [agree, setAgree] = useState(false);
 
   const { logIn } = useContext(AuthContext);
   const navigate = useNavigate();
+
   const onSubmitHandler = (event: Event) => {
     event.preventDefault();
 
@@ -20,6 +22,7 @@ const LoginPage = () => {
       setIsDataSubmitted(true);
       return;
     }
+
     logIn(currState === "Register" ? "signup" : "login", {
       fullName,
       email,
@@ -31,11 +34,14 @@ const LoginPage = () => {
   return (
     <div className="flex items-center justify-center gap-8 sm:justify-evenly max-sm:flex-col backdrop-blur-2xl min-h-screen bg-cover bg-center">
       {/* left Section */}
-      <img
-        src={assets.logo_big}
-        alt="Big Logo"
-        className="w-[min(30vw, 250px)]"
-      />
+      <div className="flex flex-col justify-center items-center gap-4">
+        <img
+          src={assets.logo_icon}
+          alt="Big Logo"
+          className="w-[min(30vw, 250px)]"
+        />
+        <p className="text-6xl lg:text-8xl  text-white">Chat.io</p>
+      </div>
 
       {/* right Section*/}
       <form
@@ -99,14 +105,21 @@ const LoginPage = () => {
         )}
 
         <button
+          disabled={!agree}
           type="submit"
-          className="py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer"
+          className="disabled:cursor-not-allowed py-3 bg-gradient-to-r from-purple-400 to-violet-600 text-white rounded-md cursor-pointer"
         >
           {currState === "Register" ? "Create Account" : "Login Now"}
         </button>
 
         <div className="flex items-center gap-2 text-sm text-gray-500">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            checked={agree}
+            onChange={(e) => {
+              setAgree(e.target.checked);
+            }}
+          />
           <p>
             Agree to the{" "}
             <span
