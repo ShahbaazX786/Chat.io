@@ -3,8 +3,33 @@
 
 * {
     font-family: "Outfit", sans-serif;
+    /* overflow-x: hidden; */
+}
+
+body {
+    --sb-track-color: #433e54 !important;
+    --sb-thumb-color: #7004f7 !important;
+    --sb-size: 5px !important;
 }
 
 ::-webkit-scrollbar {
-    display: none !important;
+    display: none;
+    width: var(--sb-size) !important
+}
+
+::-webkit-scrollbar-track {
+    background: var(--sb-track-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--sb-thumb-color);
+    border-radius: 5px;
+
+}
+
+@supports not selector(::-webkit-scrollbar) {
+    body {
+        scrollbar-color: var(--sb-thumb-color) var(--sb-track-color) !important;
+    }
 }
