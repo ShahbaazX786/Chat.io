@@ -1,9 +1,13 @@
 export function formatMsgTime(date: string) {
-  return new Date(date).toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
+  let result = null;
+  if (date) {
+    result = new Date(date).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  }
+  return result;
 }
 
 const getMemberSince = (date: string): string => {
